@@ -75,15 +75,15 @@ You may freely install dependencies manually if preferred.
 
 ### 1️⃣ (Optional) Create Environment
 
-conda create -n ml_env python=3.10
+conda create -n ml_env python=3.11
 conda activate ml_env
 
 ### 2️⃣ Install Dependencies
 
-pip install -r Deployment/requirements.txt
+pip install -r requirements.txt
 
 ### 3️⃣ Run Web App
 
-cd Deployment
+cd codes
 streamlit run app.py
 
