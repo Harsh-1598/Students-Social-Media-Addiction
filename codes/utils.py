@@ -2,6 +2,11 @@ from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd 
 import numpy as np
 
+# Understanding BaseEstimator and TransformerMixin:
+# 1. BaseEstimator and TransformerMixin are used to make a custom Python class behave like a real scikit-learn transformer.
+# 2. BaseEstimator makes the class compatible with sklearn tools (pipelines, saving/loading, tuning), and TransformerMixin adds fit_transform() automatically.
+# 3. Using both ensures the custom transformer works smoothly inside pipelines and during deployment without breaking.
+
 # Class to cap the outliers to find the outliers and cap them between the Min-Max range 
 class IQRClipper(BaseEstimator, TransformerMixin):
     def __init__(self):
