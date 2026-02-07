@@ -242,7 +242,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Load model
-model = joblib.load('codes/addiction_model.pkl')
+model = joblib.load('codes\addiction_model.pkl')
 
 # Header
 st.title("🎓 Student Social Media Addiction Analyzer")
@@ -624,6 +624,23 @@ if st.button("🔍 Analyze My Digital Habits", type="primary", use_container_wid
     
     **Remember:** Seeking help is a sign of strength, not weakness. All services listed are confidential and professional.
     """)
+
+st.markdown("---")
+st.subheader("ℹ️ Prediction Accuracy Notice")
+
+st.markdown("""
+This model performs best when inputs fall within the ranges observed in the training data.
+Predictions outside these ranges are still provided but should be interpreted with caution.
+""")
+
+st.markdown("""
+**Most reliable input ranges:**
+- 🎂 **Age:** 18 – 24 years  
+- 📱 **Daily social media usage:** 1.5 – 8.5 hours  
+- 😴 **Sleep duration:** 3.8 – 9.6 hours/night  
+- 🧠 **Mental health score:** 4 – 9 (out of 10)  
+- ⚡ **Monthly social media conflicts:** 0 – 5
+""")
 
 # Footer
 st.markdown("---")
