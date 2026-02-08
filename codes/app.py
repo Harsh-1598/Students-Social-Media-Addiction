@@ -318,22 +318,22 @@ Mental_Health_Score = st.slider(
     • Difficulty getting through daily activities
     • May need immediate professional support
     
-    🟠 3-4: Struggling
+    🟠 2-4: Struggling
     • Frequent mood swings or stress
     • Often feeling overwhelmed
     • Difficulty coping with daily challenges
     
-    🟡 5-6: Fair
+    🟡 4-6: Fair
     • Occasional stress or anxiety
     • Generally manageable but could be better
     • Some ups and downs
     
-    🟢 7-8: Good
+    🟢 6-8: Good
     • Generally positive mood and outlook
     • Able to handle daily challenges well
     • Good emotional balance
     
-    💚 9-10: Excellent
+    💚 8-10: Excellent
     • Consistently happy and content
     • Strong emotional resilience
     • Very satisfied with life overall
