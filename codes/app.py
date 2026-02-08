@@ -242,7 +242,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Load model
-model = joblib.load("codes\addiction_model.pkl")
+model = joblib.load(r"codes/addiction_model.pkl")
 
 # Header
 st.title("🎓 Student Social Media Addiction Analyzer")
