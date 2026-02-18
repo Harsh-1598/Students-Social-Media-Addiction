@@ -242,7 +242,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Load model
-model = joblib.load(r"codes/addiction_model.pkl")
+model = joblib.load(r"C:\Users\kejri\OneDrive\Desktop\MLOps\Learning ML from Basics\Projects\Students Social Media Addiction\codes\addiction_model.pkl")
 
 # Header
 st.title("🎓 Student Social Media Addiction Analyzer")
@@ -253,44 +253,128 @@ st.markdown("---")
 st.subheader("👤 Personal Information")
 
 Age = st.slider(
-    "Age", 
-    min_value=10, 
-    max_value=30, 
-    value=18, 
+    "Select your age 🎂",
+    min_value=10,
+    max_value=30,
+    value=18,
     step=1
 )
 
-Gender = st.selectbox("Gender", ["Male", "Female"])
+# Dynamic label feedback
+def age_label(age):
+    if age < 13:
+        return "Young Explorer 🚀"
+    elif age < 18:
+        return "Teen Mode ⚡"
+    elif age < 23:
+        return "College Zone 🎓"
+    else:
+        return "Adulting Phase 💼"
 
-Academic_Level = st.selectbox("Academic Level", ["High School", "Undergraduate", "Graduate"])
+st.caption(f"Stage: {age_label(Age)}")
 
-Relationship_Status = st.selectbox("Relationship Status", ["Single", "In Relationship", "Complicated"])
+
+def smart_selectbox(label, options_dict):
+    return st.selectbox(
+        label,
+        options=list(options_dict.keys()),
+        format_func=lambda x: options_dict[x]
+    )
+
+Gender = smart_selectbox(
+    "Gender",
+    {
+        "Male": "🧑 Male",
+        "Female": "👩 Female"
+    }
+)
+
+Academic_Level = smart_selectbox(
+    "Academic Level",
+    {
+        "High School": "📚 High Schooler",
+        "Undergraduate": "🎓 Undergrad",
+        "Graduate": "🧠 Grad Scholar"
+    }
+)
+
+relationship_options = {
+    "Single": "Single 😎",
+    "In Relationship": "Taken ❤️",
+    "Complicated": "It's... complicated 😵‍💫"
+}
+
+relationship_status = st.selectbox(
+    "Relationship Status",
+    options=list(relationship_options.keys()),
+    format_func=lambda x: relationship_options[x]
+)
 
 st.markdown("---")
 
 # Section 2: Usage Patterns
 st.subheader("📱 Digital Usage Patterns")
 
-Avg_Daily_Usage_Hours = st.slider(
-    "Average Daily Screen Time (hours)", 
-    min_value=0.0, 
-    max_value=15.0, 
-    value=3.0, 
-    step=0.1,
-    help="How many hours do you spend on social media per day on average? Include time on all platforms combined."
+def smart_slider(label, min_v, max_v, default, step, help=None, tips=None):
+    val = st.slider(label, min_v, max_v, default, step, help=help)
+    if tips:
+        for condition, text in tips:
+            if condition(val):
+                st.caption(text)
+                break
+    return val
+
+
+def smart_select(label, options_dict):
+    return st.selectbox(
+        label,
+        options=list(options_dict.keys()),
+        format_func=lambda x: options_dict[x]
+    )
+
+# Avg Usage
+Avg_Daily_Usage_Hours = smart_slider(
+    "Average Social Media Usage 📱",
+    0.0, 15.0, 3.0, 0.1,
+     help="How many hours do you spend on social media per day on average? Include time on all platforms combined.",
+    tips=[
+        (lambda x: x < 2, "Healthy balance 👍"),
+        (lambda x: x < 5, "Moderate usage 🙂"),
+        (lambda x: x < 8, "Heavy scrolling 👀"),
+        (lambda x: True, "Digital overload ⚠️")
+    ]
 )
 
-Most_Used_Platform = st.selectbox(
-    "Primary Social Media Platform", ['Instagram', 'Twitter', 'TikTok', 'YouTube', 'Facebook','LinkedIn', 'Snapchat', 'LINE', 'KakaoTalk', 'VKontakte', 'WhatsApp', 'WeChat']
+# Platform
+Most_Used_Platform = smart_select(
+    "Main Platform",
+    {
+        "Instagram": "Instagram 📸",
+        "Twitter": "Twitter 🐦",
+        "TikTok": "TikTok 🎵",
+        "YouTube": "YouTube ▶️",
+        "Facebook": "Facebook 👥",
+        "LinkedIn": "LinkedIn 💼",
+        "Snapchat": "Snapchat 👻",
+        "LINE": "LINE 💬",
+        "KakaoTalk": "KakaoTalk 🟡",
+        "VKontakte": "VKontakte 🌐",
+        "WhatsApp": "WhatsApp 🟢",
+        "WeChat": "WeChat 🧧"
+    }
 )
 
-Sleep_Hours_Per_Night = st.slider(
-    "Sleep Duration (hours per night)", 
-    min_value=2.0, 
-    max_value=15.0, 
-    value=8.0, 
-    step=0.1,
-    help="How many hours of sleep do you get on average each night? Quality sleep is essential for mental health, memory consolidation, and academic performance."
+# Sleep
+Sleep_Hours_Per_Night = smart_slider(
+    "Average Sleep per Night 😴",
+    2.0, 15.0, 8.0, 0.1,
+    help="How many hours of sleep do you get on average each night? Quality sleep is essential for mental health, memory consolidation, and academic performance.",
+    tips=[
+        (lambda x: x < 5, "Severely sleep deprived 🚨"),
+        (lambda x: x < 7, "Running low 😬"),
+        (lambda x: x <= 9, "Healthy sleep ✅"),
+        (lambda x: True, "Oversleep zone 🐻")
+    ]
 )
 
 st.markdown("---")
@@ -299,57 +383,49 @@ st.markdown("---")
 st.subheader("🧠 Wellbeing & Academic Impact")
 
 Affects_Academic_Performance = st.selectbox(
-    "Does social media interfere with your studies?", 
-    ["Yes", "No"],
-    help="Have you noticed that time spent on social media impacts your ability to focus on studies, complete assignments on time, attend classes, or maintain good grades?"
+    "Does social media affect your studies? 🎯",
+    options=["Yes", "No"],
+    help="Have you noticed that time spent on social media impacts your ability to focus on studies, complete assignments on time, attend classes, or maintain good grades?",
 )
 
+# Dynamic response feedback
+if Affects_Academic_Performance == "Yes":
+    st.caption("Might be worth reviewing your screen habits 📉")
+else:
+    st.caption("Nice — looks like you’ve got balance 👍")
 Mental_Health_Score = st.slider(
-    "Overall Wellbeing Score", 
-    min_value=0.0, 
-    max_value=10.0, 
-    value=7.0, 
+    "How Are You Feeling Overall? 💭",
+    min_value=0.0,
+    max_value=10.0,
+    value=7.0,
     step=0.1,
-    help="""
-    Rate your overall mental and emotional wellbeing on a scale of 0-10:
-    
-    🔴 0-2: Severe difficulties
-    • Persistent sadness, anxiety, or emotional distress
-    • Difficulty getting through daily activities
-    • May need immediate professional support
-    
-    🟠 2-4: Struggling
-    • Frequent mood swings or stress
-    • Often feeling overwhelmed
-    • Difficulty coping with daily challenges
-    
-    🟡 4-6: Fair
-    • Occasional stress or anxiety
-    • Generally manageable but could be better
-    • Some ups and downs
-    
-    🟢 6-8: Good
-    • Generally positive mood and outlook
-    • Able to handle daily challenges well
-    • Good emotional balance
-    
-    💚 8-10: Excellent
-    • Consistently happy and content
-    • Strong emotional resilience
-    • Very satisfied with life overall
-    
-    Consider: stress levels, anxiety, mood stability, life satisfaction, ability to cope with challenges
-    """
+    help="\n".join([
+        "Rate your current mental vibe from 0–10:\n",
+        "💀 0–2 → Crisis mode, things feel really heavy right now.\n",
+        "😵 2–4 → Struggling phase, stress and mood swings showing up often.\n",
+        "😐 4–6 → Mid zone, managing life but not fully thriving.\n",
+        "🙂 6–8 → Stable state, handling things pretty well overall.\n",
+        "😎 8–10 → Peak mode, strong mindset and feeling great."
+    ])
 )
 
 Conflicts_Over_Social_Media = st.number_input(
-    "Monthly Arguments About Social Media Use", 
-    min_value=0, 
-    max_value=25, 
-    value=0, 
+    "Social Media–Related Conflicts (Past Month)",
+    min_value=0,
+    max_value=25,
+    value=0,
     step=1,
-    help="In the past month, how many arguments, disagreements, or conflicts have you had with family, friends, or partners that were directly caused by your social media use? Examples: fighting about phone usage during meals, arguments about spending too much time online, conflicts due to social media content."
+    help="\n".join([
+        "How many conflicts happened because of your social media use in the last month?",
+        "Examples: arguments about screen time, phone use during meals, or issues caused by posts or online activity."
+    ])
 )
+if Conflicts_Over_Social_Media == 0:
+    st.caption("Peaceful month 👍")
+elif Conflicts_Over_Social_Media < 5:
+    st.caption("Minor friction here and there 😅")
+else:
+    st.caption("Might be worth reviewing habits ⚠️")
 
 st.markdown("---")
 
@@ -366,7 +442,7 @@ if st.button("🔍 Analyze My Digital Habits", type="primary", use_container_wid
         "Affects_Academic_Performance": [Affects_Academic_Performance],
         "Sleep_Hours_Per_Night": [Sleep_Hours_Per_Night],
         "Mental_Health_Score": [Mental_Health_Score],
-        "Relationship_Status": [Relationship_Status],
+        "Relationship_Status": [relationship_status],
         "Conflicts_Over_Social_Media": [Conflicts_Over_Social_Media]
     })
 
